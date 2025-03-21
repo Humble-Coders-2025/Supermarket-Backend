@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
     mysql:
         image: mysql:8.0
@@ -10,18 +12,41 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         volumes:
             - mysql_data:/var/lib/mysql
+        networks:
+            - backend-network
 
     express-app:
         build:
             context: .
         container_name: express-app
         restart: always
-        ports:
-            - 8080:8080
         env_file:
             - .env
         depends_on:
             - mysql
+        networks:
+            - backend-network
+
+    nginx:
+        image: nginx:latest
+        container_name: nginx_proxy
+        restart: always
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf:ro
+            - ./certs:/etc/letsencrypt
+            - ./html:/usr/share/nginx/html
+            - ./logs:/var/log/nginx
+        depends_on:
+            - express-app
+        networks:
+            - backend-network
 
 volumes:
     mysql_data:
+
+networks:
+    backend-network:
+        driver: bridge

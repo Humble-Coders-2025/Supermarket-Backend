@@ -3,3 +3,8 @@ npm-debug.log
 build
 
 .env
+
+logs/
+html/
+certs/
+nginx.local.conf

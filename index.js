@@ -2,9 +2,9 @@ const express = require("express");
 const app = express();
 
 // Connect to database
-const sequelize = require("./config/database");
+const { sequelize } = require("./models/index.js");
 sequelize
-    .authenticate()
+    .sync({ alter: true })
     .then(() => {
         console.log("Connected to database");
 
