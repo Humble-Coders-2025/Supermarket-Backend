@@ -34,7 +34,7 @@ services:
             - "443:443"
         volumes:
             - ${NGINX_OVERRIDE_FILE:-./nginx.conf}:/etc/nginx/nginx.conf:ro
-            - ./certs:/etc/letsencrypt
+            - ./certs:/etc/nginx/certs:ro
             - ./html:/usr/share/nginx/html
             - ./logs:/var/log/nginx
         depends_on:
