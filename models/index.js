@@ -8,6 +8,21 @@ const {
     Attribute,
     ProductVariant,
 } = require("./product");
+const Order = require("./order.js");
+const Transaction = require("./transaction.js");
+
+// Define associations
+User.hasMany(Order);
+Order.belongsTo(User);
+
+User.hasMany(Transaction);
+Transaction.belongsTo(User);
+
+Order.hasOne(Transaction);
+Transaction.belongsTo(Order);
+
+Order.belongsToMany(ProductVariant, { through: "order_product_variants" });
+ProductVariant.belongsToMany(Order, { through: "order_product_variants" });
 
 // Export all models
 module.exports = {
@@ -18,4 +33,6 @@ module.exports = {
     ProductAttribute,
     Attribute,
     ProductVariant,
+    Order,
+    Transaction,
 };
