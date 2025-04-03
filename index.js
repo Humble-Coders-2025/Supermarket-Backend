@@ -21,6 +21,10 @@ sequelize
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Base router
+const baseRouter = require("./routes/index.js");
+app.use("/api", baseRouter);
+
 // Error handling middleware
 const errorHandler = require("./middlewares/error");
 app.use(errorHandler);
