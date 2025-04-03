@@ -18,6 +18,9 @@ sequelize
         process.exit(1);
     });
 
-app.get("/", (req, res) => {
-    res.send("Hello World");
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Error handling middleware
+const errorHandler = require("./middlewares/error");
+app.use(errorHandler);
