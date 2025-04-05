@@ -31,6 +31,13 @@ const register = (req, res, next) => {
         "phone_number",
     ]);
 
+    // IMPORTANT: Change to allow other login methods in future
+    if (!userData.phone_number) {
+        return res.status(codes.BAD_REQUEST).json({
+            message: "Only phone logins are allowed for Customers",
+        });
+    }
+
     // Check if user exists in the database
     const existingUser = AuthService.getUserById(
         userData.uid,
