@@ -24,8 +24,8 @@ router.post(
         body("firstName").notEmpty().withMessage("First name is required"),
         body("lastName").notEmpty().withMessage("Last name is required"),
         body("phone")
-            .isMobilePhone("en-IN")
-            .withMessage("Phone number is required"),
+            .isEmpty()
+            .withMessage("Phone number sholud be set via firebase token"),
     ]),
     AuthController.register
 );

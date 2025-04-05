@@ -26,7 +26,10 @@ const register = (req, res, next) => {
     const { authorization } = req.headers;
 
     // Verify the authorization header
-    const userData = AuthService.verifytoken(authorization, ["uid"]);
+    const userData = AuthService.verifytoken(authorization, [
+        "uid",
+        "phone_number",
+    ]);
 
     // Check if user exists in the database
     const existingUser = AuthService.getUserById(
@@ -44,6 +47,7 @@ const register = (req, res, next) => {
     const user = AuthService.createUser({
         id: userData.uid,
         ...req.body,
+        phone: userData.phone_number,
         type: UserTypes.CUSTOMER,
     });
 
