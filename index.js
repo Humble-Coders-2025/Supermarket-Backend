@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Base router
 const baseRouter = require("./routes/index.js");
-app.use("/api", baseRouter);
+app.use("/api/v1", baseRouter);
 
 // Error handling middleware
 const errorHandler = require("./middlewares/error");
