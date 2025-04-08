@@ -1,14 +1,18 @@
 const router = require("express").Router();
 const UserMiddlewares = require("../../middlewares/user.js");
-const customerMiddleware = [
-    UserMiddlewares.userExists,
-    UserMiddlewares.isCustomer,
-];
+const { UserTypes } = require("../../config/enums.js");
 
 const authRouter = require("./auth.js");
 router.use("/auth", authRouter);
 
 const dataRouter = require("./data.js");
-router.use("/data", customerMiddleware, dataRouter);
+router.use(
+    "/data",
+    [
+        UserMiddlewares.authenticate,
+        UserMiddlewares.authorizeRoles(UserTypes.CUSTOMER),
+    ],
+    dataRouter
+);
 
 module.exports = router;

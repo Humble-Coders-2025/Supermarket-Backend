@@ -21,8 +21,22 @@ const TransactionStatus = {
     FAILED: "failed",
 };
 
+const CarouselItemType = {
+    DISCOUNT: "discount",
+    ADVRTISEMENT: "advertisement",
+    PRODUCT: "product",
+    CATEGORY: "category",
+};
+
+const DiscountType = {
+    PERCENTAGE: "percentage",
+    FLAT: "flat",
+};
+
 module.exports = {
     UserTypes,
     OrderStatus,
     TransactionStatus,
+    CarouselItemType,
+    DiscountType,
 };

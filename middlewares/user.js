@@ -2,7 +2,7 @@ const { HttpError } = require("../config/http");
 const { User } = require("../models");
 const firebaseAdmin = require("../config/firebase");
 
-const userExists = async (req, res, next) => {
+const authenticate = async (req, res, next) => {
     const token = req.headers.authorization;
     try {
         if (!token) return next(new HttpError(401, "No token provided!"));
@@ -18,14 +18,22 @@ const userExists = async (req, res, next) => {
     }
 };
 
-const isCustomer = (req, res, next) => {
-    const { UserTypes } = require("../config/enums");
-    if (req.user.type !== UserTypes.CUSTOMER) {
-        return next(
-            new HttpError(403, "Only customers can access this route!")
-        );
-    }
-    return next();
+const authorizeRoles = (...allowedRoles) => {
+    return (req, res, next) => {
+        if (!req.user)
+            return next(new HttpError(401, "User not authenticated!"));
+
+        if (!allowedRoles.includes(req.user.type)) {
+            return next(
+                new HttpError(
+                    403,
+                    `Access denied! Only allowed for ${allowedRoles.join(", ")}`
+                )
+            );
+        }
+
+        return next();
+    };
 };
 
-module.exports = { userExists, isCustomer };
+module.exports = { authenticate, authorizeRoles };

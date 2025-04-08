@@ -10,6 +10,7 @@ const {
 } = require("./product");
 const Order = require("./order.js");
 const Transaction = require("./transaction.js");
+const CarouselItem = require("./carousel_item.js");
 
 // Define associations
 User.hasMany(Order);
@@ -35,4 +36,5 @@ module.exports = {
     ProductVariant,
     Order,
     Transaction,
+    CarouselItem,
 };
