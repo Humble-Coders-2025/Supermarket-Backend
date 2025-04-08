@@ -18,4 +18,14 @@ const userExists = async (req, res, next) => {
     }
 };
 
-module.exports = userExists;
+const isCustomer = (req, res, next) => {
+    const { UserTypes } = require("../config/enums");
+    if (req.user.type !== UserTypes.CUSTOMER) {
+        return next(
+            new HttpError(403, "Only customers can access this route!")
+        );
+    }
+    return next();
+};
+
+module.exports = { userExists, isCustomer };
