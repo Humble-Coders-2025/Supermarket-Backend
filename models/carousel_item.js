@@ -8,6 +8,10 @@ const CarouselItem = sequelize.define("carouselItem", {
         primaryKey: true,
         autoIncrement: true,
     },
+    type: {
+        type: DataTypes.ENUM(Object.values(CarouselItemType)),
+        allowNull: false,
+    },
     discountType: {
         type: DataTypes.ENUM(Object.values(DiscountType)),
     },
@@ -22,6 +26,14 @@ const CarouselItem = sequelize.define("carouselItem", {
     },
     buttonLink: {
         type: DataTypes.STRING,
+    },
+    image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
     },
 });
 

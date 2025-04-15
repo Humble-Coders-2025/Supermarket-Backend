@@ -5,14 +5,16 @@ const { UserTypes } = require("../../config/enums.js");
 const authRouter = require("./auth.js");
 router.use("/auth", authRouter);
 
+// Mandatory authentication and authorization for all routes after this point
+router.use([
+    UserMiddlewares.authenticate,
+    UserMiddlewares.authorizeRoles(UserTypes.CUSTOMER),
+]);
+
 const dataRouter = require("./data.js");
-router.use(
-    "/data",
-    [
-        UserMiddlewares.authenticate,
-        UserMiddlewares.authorizeRoles(UserTypes.CUSTOMER),
-    ],
-    dataRouter
-);
+router.use("/data", dataRouter);
+
+const carouselRouter = require("./carousel.js");
+router.use("/carousel", carouselRouter);
 
 module.exports = router;
