@@ -16,7 +16,7 @@ const login = (req, res, next) => {
     // Check if user exists in the database
     var user;
     try {
-        user = AuthService.getUserById(userData.user_id, UserTypes.CUSTOMER);
+        user = AuthService.getUserById(userData["user_id"], UserTypes.CUSTOMER);
     } catch (error) {
         return next(error);
     }
