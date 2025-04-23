@@ -15,10 +15,13 @@ const getCarouselItems = async (
     return carouselItems;
 };
 
-const getCarouselItemById = async (id) => {
+const getCarouselItemById = async (id, includeTimestamps = false) => {
     const carouselItem = await CarouselItem.findOne({
         where: {
             id,
+        },
+        attributes: {
+            ...(!includeTimestamps && { exclude: ["createdAt", "updatedAt"] }),
         },
     });
     return carouselItem;
