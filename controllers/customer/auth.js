@@ -6,10 +6,10 @@ const login = (req, res, next) => {
     const { authorization } = req.headers;
 
     // Verify the authorization header
-    const userData = AuthService.verifytoken(authorization, ["uid"]);
+    const userData = AuthService.verifytoken(authorization, ["user_id"]);
 
     // Check if user exists in the database
-    const user = AuthService.getUserById(userData.uid, UserTypes.CUSTOMER);
+    const user = AuthService.getUserById(userData.user_id, UserTypes.CUSTOMER);
     if (!user) {
         return res.status(codes.OK).json({
             newUser: true,
@@ -27,7 +27,7 @@ const register = (req, res, next) => {
 
     // Verify the authorization header
     const userData = AuthService.verifytoken(authorization, [
-        "uid",
+        "user_id",
         "phone_number",
     ]);
 
@@ -40,7 +40,7 @@ const register = (req, res, next) => {
 
     // Check if user exists in the database
     const existingUser = AuthService.getUserById(
-        userData.uid,
+        userData.user_id,
         UserTypes.CUSTOMER
     );
     if (existingUser) {
@@ -52,7 +52,7 @@ const register = (req, res, next) => {
 
     // Create a new user in the database
     const user = AuthService.createUser({
-        id: userData.uid,
+        id: userData.user_id,
         ...req.body,
         phone: userData.phone_number,
         type: UserTypes.CUSTOMER,

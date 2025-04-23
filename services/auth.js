@@ -1,6 +1,6 @@
 const { HttpError, codes } = require("../config/http");
 
-const verifytoken = async (tokenString, requiredFields = ["uid"]) => {
+const verifytoken = async (tokenString, requiredFields = ["user_id"]) => {
     if (!tokenString)
         throw new HttpError(
             codes.INTERNAL_SERVER_ERROR,

@@ -10,7 +10,7 @@ const authenticate = async (req, res, next) => {
         if (!token) return next(new HttpError(401, "No token provided!"));
 
         const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
-        const user = await User.findByPk(decodedToken.uid, {
+        const user = await User.findByPk(decodedToken.user_id, {
             include: [Admin, Customer, DeliveryPartner],
         });
         if (!user) return next(new HttpError(404, "User not found!"));
