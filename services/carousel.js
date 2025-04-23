@@ -8,13 +8,10 @@ const getCarouselItems = async (
         where: {
             ...(onlyActive && { active: true }),
         },
+        attributes: {
+            ...(includeTimestamps && { exclude: ["createdAt", "updatedAt"] }),
+        },
     });
-    if (!includeTimestamps) {
-        carouselItems.forEach((item) => {
-            delete item.createdAt;
-            delete item.updatedAt;
-        });
-    }
     return carouselItems;
 };
 
