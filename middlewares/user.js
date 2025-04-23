@@ -17,7 +17,7 @@ const authenticate = async (req, res, next) => {
         req.user = user;
         return next();
     } catch (e) {
-        next(e);
+        next(new HttpError(401, "Invalid token!", e));
     }
 };
 
