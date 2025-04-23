@@ -9,7 +9,7 @@ const getCarouselItems = async (
             ...(onlyActive && { active: true }),
         },
         attributes: {
-            ...(includeTimestamps && { exclude: ["createdAt", "updatedAt"] }),
+            ...(!includeTimestamps && { exclude: ["createdAt", "updatedAt"] }),
         },
     });
     return carouselItems;
