@@ -13,6 +13,9 @@ const login = (req, res, next) => {
         return next(error);
     }
 
+    // TODO: Remove
+    console.log(userData);
+
     // Check if user exists in the database
     var user;
     try {
