@@ -1,6 +1,6 @@
 // Import all models here and define associations
 const sequelize = require("../config/database");
-const User = require("./user.js");
+const { User, Customer, Admin, DeliveryPartner } = require("./users/index.js");
 const {
     Category,
     Product,
@@ -37,4 +37,7 @@ module.exports = {
     Order,
     Transaction,
     CarouselItem,
+    Customer,
+    Admin,
+    DeliveryPartner,
 };

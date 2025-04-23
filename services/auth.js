@@ -56,6 +56,14 @@ const getUserById = async (userId, userType, fields) => {
 };
 
 const createUser = async (userData) => {
+    const { UserTypes } = require("../config/enums.js");
+    if (userData.type == UserTypes.ADMIN) {
+        throw new HttpError(
+            codes.BAD_REQUEST,
+            "Cannot create admin user directly"
+        );
+    }
+
     const { User } = require("../models/index.js");
     if (!userData)
         throw new HttpError(
@@ -67,8 +75,26 @@ const createUser = async (userData) => {
     return user;
 };
 
+const getAllUsers = async (userType, fields, offset, limit) => {
+    const { User } = require("../models/index.js");
+    if (!userType)
+        throw new HttpError(
+            codes.INTERNAL_SERVER_ERROR,
+            "User Type is required"
+        );
+    if (!fields) fields = User.getAttributes();
+    const users = await User.findAll({
+        where: { type: userType },
+        attributes: fields,
+        offset,
+        limit,
+    });
+    return users;
+};
+
 module.exports = {
     verifytoken,
     getUserById,
     createUser,
+    getAllUsers,
 };

@@ -3,12 +3,15 @@ const { User } = require("../models");
 const firebaseAdmin = require("../config/firebase");
 
 const authenticate = async (req, res, next) => {
+    const { Admin, Customer, DeliveryPartner } = require("../models/index.js");
     const token = req.headers.authorization;
     try {
         if (!token) return next(new HttpError(401, "No token provided!"));
 
         const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
-        const user = await User.findByPk(decodedToken.uid);
+        const user = await User.findByPk(decodedToken.uid, {
+            include: [Admin, Customer, DeliveryPartner],
+        });
         if (!user) return next(new HttpError(404, "User not found!"));
 
         req.user = user;
