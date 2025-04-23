@@ -4,7 +4,8 @@ const firebaseAdmin = require("../config/firebase");
 
 const authenticate = async (req, res, next) => {
     const { Admin, Customer, DeliveryPartner } = require("../models/index.js");
-    const token = req.headers.authorization;
+    const token = req.headers.authorization.toString().replace("Bearer ", "");
+
     try {
         if (!token) return next(new HttpError(401, "No token provided!"));
 
