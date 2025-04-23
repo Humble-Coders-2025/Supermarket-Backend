@@ -1,15 +1,26 @@
 const { UserTypes } = require("../../config/enums.js");
-const { codes } = require("../../config/http.js");
+const { codes, HttpError } = require("../../config/http.js");
 const AuthService = require("../../services/auth.js");
 
 const login = (req, res, next) => {
     const { authorization } = req.headers;
 
     // Verify the authorization header
-    const userData = AuthService.verifytoken(authorization, ["user_id"]);
+    try {
+        const userData = AuthService.verifytoken(authorization, ["user_id"]);
+    } catch (error) {
+        return next(error);
+    }
 
     // Check if user exists in the database
-    const user = AuthService.getUserById(userData.user_id, UserTypes.CUSTOMER);
+    try {
+        const user = AuthService.getUserById(
+            userData.user_id,
+            UserTypes.CUSTOMER
+        );
+    } catch (error) {
+        return next(error);
+    }
     if (!user) {
         return res.status(codes.OK).json({
             newUser: true,
