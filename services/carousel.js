@@ -6,6 +6,7 @@ const getCarouselItems = async (onlyActive = true) => {
             ...(onlyActive && { active: true }),
         },
     });
+    return carouselItems;
 };
 
 const getCarouselItemById = async (id) => {
