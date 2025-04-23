@@ -45,7 +45,11 @@ const getUserById = async (userId, userType, fields) => {
     if (!userId || !userType)
         throw new HttpError(
             codes.INTERNAL_SERVER_ERROR,
-            "User ID and Type is required"
+            "User ID and Type is required",
+            {
+                userId,
+                userType,
+            }
         );
     if (!fields) fields = User.getAttributes();
     const user = await User.findOne({
