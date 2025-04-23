@@ -2,24 +2,24 @@ const { UserTypes } = require("../../config/enums.js");
 const { codes, HttpError } = require("../../config/http.js");
 const AuthService = require("../../services/auth.js");
 
-const login = (req, res, next) => {
+const login = async (req, res, next) => {
     const { authorization } = req.headers;
 
     // Verify the authorization header
     var userData;
     try {
-        userData = AuthService.verifytoken(authorization, ["user_id"]);
+        userData = await AuthService.verifytoken(authorization, ["user_id"]);
     } catch (error) {
         return next(error);
     }
 
-    // TODO: Remove
-    console.log(userData);
-
     // Check if user exists in the database
     var user;
     try {
-        user = AuthService.getUserById(userData["user_id"], UserTypes.CUSTOMER);
+        user = await AuthService.getUserById(
+            userData.user_id,
+            UserTypes.CUSTOMER
+        );
     } catch (error) {
         return next(error);
     }
@@ -35,11 +35,11 @@ const login = (req, res, next) => {
     });
 };
 
-const register = (req, res, next) => {
+const register = async (req, res, next) => {
     const { authorization } = req.headers;
 
     // Verify the authorization header
-    const userData = AuthService.verifytoken(authorization, [
+    const userData = await AuthService.verifytoken(authorization, [
         "user_id",
         "phone_number",
     ]);
@@ -52,7 +52,7 @@ const register = (req, res, next) => {
     }
 
     // Check if user exists in the database
-    const existingUser = AuthService.getUserById(
+    const existingUser = await AuthService.getUserById(
         userData.user_id,
         UserTypes.CUSTOMER
     );
@@ -64,7 +64,7 @@ const register = (req, res, next) => {
     }
 
     // Create a new user in the database
-    const user = AuthService.createUser({
+    const user = await AuthService.createUser({
         id: userData.user_id,
         ...req.body,
         phone: userData.phone_number,
