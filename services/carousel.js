@@ -1,11 +1,20 @@
 const { CarouselItem } = require("../models/index.js");
 
-const getCarouselItems = async (onlyActive = true) => {
+const getCarouselItems = async (
+    onlyActive = true,
+    includeTimestamps = false
+) => {
     const carouselItems = await CarouselItem.findAll({
         where: {
             ...(onlyActive && { active: true }),
         },
     });
+    if (!includeTimestamps) {
+        carouselItems.forEach((item) => {
+            delete item.createdAt;
+            delete item.updatedAt;
+        });
+    }
     return carouselItems;
 };
 
