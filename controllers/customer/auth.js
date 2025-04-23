@@ -6,18 +6,17 @@ const login = (req, res, next) => {
     const { authorization } = req.headers;
 
     // Verify the authorization header
+    var userData;
     try {
-        const userData = AuthService.verifytoken(authorization, ["user_id"]);
+        userData = AuthService.verifytoken(authorization, ["user_id"]);
     } catch (error) {
         return next(error);
     }
 
     // Check if user exists in the database
+    var user;
     try {
-        const user = AuthService.getUserById(
-            userData.user_id,
-            UserTypes.CUSTOMER
-        );
+        user = AuthService.getUserById(userData.user_id, UserTypes.CUSTOMER);
     } catch (error) {
         return next(error);
     }
