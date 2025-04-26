@@ -3,7 +3,12 @@ const { header, body, param } = require("express-validator");
 const CarouselController = require("../../controllers/admin/carousel.js");
 const { CarouselItemType, DiscountType } = require("../../config/enums");
 
-router.get("/", CarouselController.getCarouselItems);
+router.get(
+    "/",
+    param("onlyActive").optional().isBoolean(),
+    param("includeTimestamps").optional().isBoolean(),
+    CarouselController.getCarouselItems
+);
 router.get("/:id", CarouselController.getCarouselItemById);
 router.post(
     "/",
