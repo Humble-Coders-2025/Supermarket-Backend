@@ -3,6 +3,9 @@ const UserMiddlewares = require("../../middlewares/user.js");
 const { UserTypes } = require("../../config/enums.js");
 const DataController = require("../../controllers/admin/data.js");
 
+const authRouter = require("./auth.js");
+router.use("/auth", authRouter);
+
 // Mandatory authentication and authorization for all routes
 router.use([
     UserMiddlewares.authenticate,
