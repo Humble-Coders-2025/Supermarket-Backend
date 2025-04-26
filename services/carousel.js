@@ -27,7 +27,36 @@ const getCarouselItemById = async (id, includeTimestamps = false) => {
     return carouselItem;
 };
 
+const createCarouselItem = async (carouselItemData) => {
+    const carouselItem = await CarouselItem.create(carouselItemData);
+    return carouselItem;
+};
+
+const updateCarouselItem = async (id, carouselItemData) => {
+    const carouselItem = await CarouselItem.findOne({
+        where: {
+            id,
+        },
+    });
+    if (!carouselItem) return null;
+    await carouselItem.update(carouselItemData);
+    return carouselItem;
+};
+
+const deleteCarouselItem = async (id) => {
+    const carouselItem = await CarouselItem.findOne({
+        where: {
+            id,
+        },
+    });
+    if (!carouselItem) return null;
+    await carouselItem.destroy();
+    return carouselItem;
+};
+
 module.exports = {
     getCarouselItems,
     getCarouselItemById,
+    createCarouselItem,
+    updateCarouselItem,
 };

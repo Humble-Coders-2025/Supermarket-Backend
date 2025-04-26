@@ -14,4 +14,7 @@ router.use([
 const dataRouter = require("./data.js");
 router.use("/data", dataRouter);
 
+const carouselRouter = require("./carousel.js");
+router.use("/carousel", carouselRouter);
+
 module.exports = router;
