@@ -9,7 +9,7 @@ const getCarouselItems = async (req, res, next) => {
     });
 };
 
-const getCarouselItemsById = async (req, res, next) => {
+const getCarouselItemById = async (req, res, next) => {
     const { id } = req.params;
     const carouselItem = await CarouselService.getCarouselItemById(id);
     if (!carouselItem) {
@@ -25,5 +25,5 @@ const getCarouselItemsById = async (req, res, next) => {
 
 module.exports = {
     getCarouselItems,
-    getCarouselItemsById,
+    getCarouselItemById,
 };
