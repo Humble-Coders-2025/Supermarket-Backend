@@ -41,6 +41,18 @@ const CarouselItem = sequelize.define(
     {
         underscored: true,
         timestamps: true,
+        validate: {
+            discountAndDiscountType() {
+                if (
+                    this.type == CarouselItemType.DISCOUNT &&
+                    !(this.discount && this.discountType)
+                ) {
+                    throw new Error(
+                        "Discount and discount type are required when type is DISCOUNT."
+                    );
+                }
+            },
+        },
     }
 );
 
