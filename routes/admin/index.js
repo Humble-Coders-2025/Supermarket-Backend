@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const UserMiddlewares = require("../../middlewares/user.js");
 const { UserTypes } = require("../../config/enums.js");
-const DataController = require("../../controllers/admin/data.js");
 
 const authRouter = require("./auth.js");
 router.use("/auth", authRouter);
@@ -12,7 +11,7 @@ router.use([
     UserMiddlewares.authorizeRoles(UserTypes.ADMIN),
 ]);
 
-router.get("/", DataController.getAllAdmins);
-router.get("/:id", DataController.getAdminDataById);
+const dataRouter = require("./data.js");
+router.use("/data", dataRouter);
 
 module.exports = router;
