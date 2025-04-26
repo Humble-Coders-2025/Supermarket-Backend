@@ -32,6 +32,6 @@ const login = async (req, res, next) => {
     });
 };
 
-modules.exports = {
+module.exports = {
     login,
 };
