@@ -6,13 +6,8 @@ const verifytoken = async (tokenString, requiredFields = ["user_id"]) => {
             codes.INTERNAL_SERVER_ERROR,
             "Authorization token is required"
         );
-    if (!tokenString.startsWith("Bearer "))
-        throw new HttpError(
-            codes.INTERNAL_SERVER_ERROR,
-            "Authorization token is invalid"
-        );
 
-    const token = tokenString.split(" ")[1];
+    const token = tokenString.replace("Bearer ", "");
     const firebaseAdmin = require("../config/firebase.js");
 
     try {
