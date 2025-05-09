@@ -36,7 +36,12 @@ const verifytoken = async (tokenString, requiredFields = ["user_id"]) => {
 };
 
 const getUserById = async (userId, userType, fields) => {
-    const { User } = require("../models/index.js");
+    const {
+        User,
+        Customer,
+        DeliveryPartner,
+        Admin,
+    } = require("../models/index.js");
     if (!userId || !userType)
         throw new HttpError(
             codes.INTERNAL_SERVER_ERROR,
@@ -50,6 +55,7 @@ const getUserById = async (userId, userType, fields) => {
     const user = await User.findOne({
         where: { id: userId, type: userType },
         attributes: fields,
+        include: [Customer, DeliveryPartner, Admin],
     });
     return user;
 };
@@ -75,7 +81,12 @@ const createUser = async (userData) => {
 };
 
 const getAllUsers = async (userType, fields, offset, limit) => {
-    const { User } = require("../models/index.js");
+    const {
+        User,
+        Customer,
+        DeliveryPartner,
+        Admin,
+    } = require("../models/index.js");
     if (!userType)
         throw new HttpError(
             codes.INTERNAL_SERVER_ERROR,
@@ -85,6 +96,7 @@ const getAllUsers = async (userType, fields, offset, limit) => {
     const users = await User.findAll({
         where: { type: userType },
         attributes: fields,
+        include: [Customer, DeliveryPartner, Admin],
         offset,
         limit,
     });

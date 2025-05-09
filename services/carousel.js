@@ -6,10 +6,15 @@ const getCarouselItems = async (
 ) => {
     const carouselItems = await CarouselItem.findAll({
         where: {
-            ...(onlyActive && { active: true }),
+            ...((onlyActive === true || onlyActive === "true") && {
+                active: true,
+            }),
         },
         attributes: {
-            ...(!includeTimestamps && { exclude: ["createdAt", "updatedAt"] }),
+            ...((includeTimestamps == false ||
+                includeTimestamps === "false") && {
+                exclude: ["createdAt", "updatedAt"],
+            }),
         },
     });
     return carouselItems;
@@ -21,7 +26,10 @@ const getCarouselItemById = async (id, includeTimestamps = false) => {
             id,
         },
         attributes: {
-            ...(!includeTimestamps && { exclude: ["createdAt", "updatedAt"] }),
+            ...((includeTimestamps == false ||
+                includeTimestamps === "false") && {
+                exclude: ["createdAt", "updatedAt"],
+            }),
         },
     });
     return carouselItem;
@@ -59,4 +67,5 @@ module.exports = {
     getCarouselItemById,
     createCarouselItem,
     updateCarouselItem,
+    deleteCarouselItem,
 };

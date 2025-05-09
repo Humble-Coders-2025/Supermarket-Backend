@@ -1,4 +1,4 @@
-const { codes } = require("../config/http");
+const { codes, HttpError } = require("../config/http");
 const { validationResult } = require("express-validator");
 
 const validate = (validations) => {
@@ -7,9 +7,13 @@ const validate = (validations) => {
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res
-                .status(codes.BAD_REQUEST)
-                .json({ errors: errors.array() });
+            return next(
+                new HttpError(
+                    codes.BAD_REQUEST,
+                    "Validation failed",
+                    errors.array()
+                )
+            );
         }
         next();
     };

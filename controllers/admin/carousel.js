@@ -1,4 +1,5 @@
 const CarouselService = require("../../services/carousel");
+const { codes } = require("../../config/http");
 
 const getCarouselItems = async (req, res, next) => {
     const { onlyActive, includeTimestamps } = req.query;
@@ -15,7 +16,11 @@ const getCarouselItems = async (req, res, next) => {
 
 const getCarouselItemById = async (req, res, next) => {
     const { id } = req.params;
-    const carouselItem = await CarouselService.getCarouselItemById(id);
+    const { includeTimestamps } = req.query;
+    const carouselItem = await CarouselService.getCarouselItemById(
+        id,
+        includeTimestamps
+    );
     if (!carouselItem) {
         return res.status(codes.NOT_FOUND).json({
             message: "Carousel item not found",

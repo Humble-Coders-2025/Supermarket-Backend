@@ -2,14 +2,14 @@ const router = require("express").Router();
 const UserMiddlewares = require("../../middlewares/user.js");
 const { UserTypes } = require("../../config/enums.js");
 
-const authRouter = require("./auth.js");
-router.use("/auth", authRouter);
-
 // Mandatory authentication and authorization for all routes
 router.use([
     UserMiddlewares.authenticate,
     UserMiddlewares.authorizeRoles(UserTypes.ADMIN),
 ]);
+
+const authRouter = require("./auth.js");
+router.use("/auth", authRouter);
 
 const dataRouter = require("./data.js");
 router.use("/data", dataRouter);
