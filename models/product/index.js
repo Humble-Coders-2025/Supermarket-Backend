@@ -34,6 +34,17 @@ Category.belongsTo(Category, {
 Category.hasMany(Product);
 Product.belongsTo(Category);
 
+Category.belongsToMany(Product, {
+    through: "FeaturedProducts",
+    as: "featuredProducts",
+    foreignKey: "categoryId",
+});
+Product.belongsToMany(Category, {
+    through: "FeaturedProducts",
+    as: "featuredInCategories",
+    foreignKey: "productId",
+});
+
 module.exports = {
     Category,
     Product,
