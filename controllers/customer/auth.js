@@ -38,43 +38,53 @@ const login = async (req, res, next) => {
 const register = async (req, res, next) => {
     const { authorization } = req.headers;
 
-    // Verify the authorization header
-    const userData = await AuthService.verifytoken(authorization, [
-        "user_id",
-        "phone_number",
-    ]);
+    try {
+        // Verify the authorization header
+        const userData = await AuthService.verifytoken(authorization, [
+            "user_id",
+            "phone_number",
+        ]);
 
-    // IMPORTANT: Change to allow other login methods in future
-    if (!userData.phone_number) {
-        return res.status(codes.BAD_REQUEST).json({
-            message: "Only phone logins are allowed for Customers",
+        // IMPORTANT: Change to allow other login methods in future
+        if (!userData.phone_number) {
+            return res.status(codes.BAD_REQUEST).json({
+                message: "Only phone logins are allowed for Customers",
+            });
+        }
+
+        // Check if user exists in the database
+        const existingUser = await AuthService.getUserById(
+            userData.user_id,
+            UserTypes.CUSTOMER
+        );
+        if (existingUser) {
+            return res.status(codes.CONFLICT).json({
+                message: "User already exists",
+                user: existingUser,
+            });
+        }
+
+        // Create a new user in the database
+        const user = await AuthService.createUser({
+            id: userData.user_id,
+            ...req.body,
+            phone: userData.phone_number,
+            type: UserTypes.CUSTOMER,
         });
-    }
 
-    // Check if user exists in the database
-    const existingUser = await AuthService.getUserById(
-        userData.user_id,
-        UserTypes.CUSTOMER
-    );
-    if (existingUser) {
-        return res.status(codes.CONFLICT).json({
-            message: "User already exists",
-            user: existingUser,
+        return res.status(codes.OK).json({
+            message: "User registered successfully",
+            user,
         });
+    } catch (error) {
+        return next(
+            new HttpError(
+                codes.INTERNAL_SERVER_ERROR,
+                "Registration failed",
+                error
+            )
+        );
     }
-
-    // Create a new user in the database
-    const user = await AuthService.createUser({
-        id: userData.user_id,
-        ...req.body,
-        phone: userData.phone_number,
-        type: UserTypes.CUSTOMER,
-    });
-
-    return res.status(codes.OK).json({
-        message: "User registered successfully",
-        user,
-    });
 };
 
 module.exports = {
